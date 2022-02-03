@@ -5,11 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.lang.NonNullFields;
-
-// import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NonNull;
 
 /**
  * Rekening

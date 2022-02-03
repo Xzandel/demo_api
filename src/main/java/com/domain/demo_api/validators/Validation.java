@@ -1,7 +1,5 @@
 package com.domain.demo_api.validators;
 
-import java.lang.reflect.Field;
-
 import com.domain.demo_api.models.dto.request.BuktiTransferRequest;
 import com.domain.demo_api.models.dto.request.RekeningRequest;
 import com.domain.demo_api.models.entities.Rekening;
@@ -12,28 +10,25 @@ import com.domain.demo_api.services.exception.ApiRequestException;
 public class Validation {
 
     // REKENING IMPLEMENTATION
-    public static boolean checkRekeningExist(RekeningRequest rekRequest, RekeningRepo rekRepo) {
+    public static void checkRekeningExist(RekeningRequest rekRequest, RekeningRepo rekRepo) {
 
         if (!rekRepo.existsById(rekRequest.getIdRekening())) {
-            return true;
         } else {
             throw new ApiRequestException("Rekening sudah terdaftar!!");
         }
     }
 
-    public static boolean checkRekeningExistByID(Integer id, RekeningRepo rekRepo) {
+    public static void checkRekeningExistByID(Integer id, RekeningRepo rekRepo) {
         if (rekRepo.existsById(id)) {
-            return true;
         } else {
             throw new ApiRequestException("Rekening tidak ditemukan");
         }
     }
 
-    public static boolean checkRekeningNullFields(RekeningRequest rekRequest) {
+    public static void checkRekeningNullFields(RekeningRequest rekRequest) {
         if (rekRequest.getCurrency() == null) {
             throw new ApiRequestException("Bad Request : Null Currency");
         }
-
         if (rekRequest.getIdRekening() == null) {
             throw new ApiRequestException("Bad Request : Null Id Rekening");
         }
@@ -44,13 +39,11 @@ public class Validation {
             throw new ApiRequestException("Bad Request : Null Saldo");
         }
 
-        return true;
-
     }
 
     // BUKTI TRANSFER IMPLEMENTATION
 
-    public static boolean checkPengirimPenerima(RekeningRepo rekRepo, BuktiTransferRepo btRepo,
+    public static void checkPengirimPenerima(RekeningRepo rekRepo, BuktiTransferRepo btRepo,
             BuktiTransferRequest btRequest) {
 
         Integer idRekeningPengirim = btRequest.getIdRekeningPengirim();
@@ -70,11 +63,9 @@ public class Validation {
             throw new ApiRequestException("ID Rekening penerima tidak ditemukan");
         }
 
-        return true;
-
     }
 
-    public static boolean checkCurrency(RekeningRepo rekRepo, BuktiTransferRepo btRepo,
+    public static void checkCurrency(RekeningRepo rekRepo, BuktiTransferRepo btRepo,
             BuktiTransferRequest btRequest) {
         Rekening rekPengirim = new Rekening();
 
@@ -96,23 +87,21 @@ public class Validation {
         String requestedCurrency = btRequest.getCurrency();
 
         if (requestedCurrency.equals(pengirimCurrency) && requestedCurrency.equals(penerimaCurrency)) {
-            return true;
         } else {
             throw new ApiRequestException("Currency yang diminta tidak sama");
         }
 
     }
 
-    public static boolean checkJumlahTransfer(Long jumlahTransfer) {
+    public static void checkJumlahTransfer(Long jumlahTransfer) {
 
         if (jumlahTransfer > 0) {
-            return true;
         } else {
             throw new ApiRequestException("Jumlah transfer tidak boleh lebih kecil dari 0");
         }
     }
 
-    public static boolean checkRequiredSaldo(RekeningRepo rekRepo, BuktiTransferRepo btRepo,
+    public static void checkRequiredSaldo(RekeningRepo rekRepo, BuktiTransferRepo btRepo,
             BuktiTransferRequest btRequest) {
         Rekening rekeningPengirim = new Rekening();
 
@@ -125,8 +114,22 @@ public class Validation {
         if (jumlahTransfer > rekeningPengirim.getSaldoRekening()) {
             throw new ApiRequestException("Jumlah Transfer tidak boleh melebihi saldo rekening");
         } else {
-            return true;
+        }
 
+    }
+
+    public static void checkBuktiTransferNullFields(BuktiTransferRequest btRequest) {
+        if (btRequest.getCurrency() == null) {
+            throw new ApiRequestException("Bad Request : Null Currency");
+        }
+        if (btRequest.getIdRekeningPenerima() == null) {
+            throw new ApiRequestException("Bad Request : Null Id Rekening Penerima");
+        }
+        if (btRequest.getIdRekeningPengirim() == null) {
+            throw new ApiRequestException("Bad Request : Null Id Rekening Penerima");
+        }
+        if (btRequest.getJumlahTransfer() == null) {
+            throw new ApiRequestException("Bad Request : Null Jumlah Transfer");
         }
 
     }

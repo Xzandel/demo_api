@@ -17,24 +17,23 @@ public class RekeningImpl implements RekeningService {
 
     @Autowired
     private RekeningRepo rekRepo;
-
-    ModelMapper modelMapper = new ModelMapper();
+    // ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
     public RekeningResponse newRekening(RekeningRequest rekRequest) {
         RekeningResponse rekResponse = new RekeningResponse();
-        if (Validation.checkRekeningNullFields(rekRequest)) {
+        Validation.checkRekeningNullFields(rekRequest);
+        Validation.checkRekeningExist(rekRequest, rekRepo);
+        Rekening rekening = new Rekening();
 
-            if (Validation.checkRekeningExist(rekRequest, rekRepo)) {
-                Rekening rekening = new Rekening();
+        mapper.map(rekRequest, rekening);
 
-                modelMapper.map(rekRequest, rekening);
+        rekRepo.save(rekening);
 
-                rekRepo.save(rekening);
+        mapper.map(rekening, rekResponse);
 
-                modelMapper.map(rekening, rekResponse);
-            }
-        }
         return rekResponse;
     }
 
@@ -42,9 +41,8 @@ public class RekeningImpl implements RekeningService {
     public RekeningResponse getSaldoRekening(Integer idRekening) {
         RekeningResponse rekResponse = new RekeningResponse();
 
-        if (Validation.checkRekeningExistByID(idRekening, rekRepo)) {
-            modelMapper.map(rekRepo.findById(idRekening).get(), rekResponse);
-        }
+        Validation.checkRekeningExistByID(idRekening, rekRepo);
+        mapper.map(rekRepo.findById(idRekening).get(), rekResponse);
 
         return rekResponse;
     }
