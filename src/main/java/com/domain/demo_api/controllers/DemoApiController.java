@@ -40,6 +40,11 @@ public class DemoApiController {
 
     // }
 
+    @GetMapping("/welcome")
+    public String welcome() {
+        return ("Welcome to our test api!!");
+    }
+
     @PostMapping("/register")
     public ResponseEntity<RekeningResponse> newRekening(@RequestBody RekeningRequest rekRequest) {
         return new ResponseEntity<RekeningResponse>(rekService.newRekening(rekRequest), HttpStatus.CREATED);
