@@ -1,7 +1,6 @@
 package com.domain.demo_api.services.impl;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.domain.demo_api.models.dto.request.BuktiTransferRequest;
@@ -14,7 +13,6 @@ import com.domain.demo_api.services.BuktiTransferService;
 import com.domain.demo_api.validators.Validation;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
