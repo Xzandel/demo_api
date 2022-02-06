@@ -39,6 +39,10 @@ public class DemoApiController {
     // }
 
     // }
+    @GetMapping("/")
+    public void home() {
+        System.out.println("Home");
+    }
 
     @GetMapping("/welcome")
     public String welcome() {
